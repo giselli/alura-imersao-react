@@ -38,10 +38,9 @@ function ProfileRelationsBox(propriedades) {
       <h2 className="smallTitle">
         {propriedades.title} ({propriedades.items.length})
       </h2>
-      <ul>
-      </ul>
+      <ul></ul>
     </ProfileRelationsBoxWrapper>
-  )
+  );
 }
 
 export default function Home() {
@@ -64,18 +63,42 @@ export default function Home() {
   ];
 
   const [seguidores, setSeguidores] = React.useState([]);
-  // 0 - Pegar o array de dados do github 
-  React.useEffect(function() {
-    fetch('https://api.github.com/users/giselli/followers')
-    .then(function (respostaDoServidor) {
-      return respostaDoServidor.json();
-    })
-    .then(function(respostaCompleta) {
-      setSeguidores(respostaCompleta);
-    })
-  }, [])
 
-  console.log('seguidores antes do return', seguidores);
+  React.useEffect(function () {
+    fetch("https://api.github.com/users/giselli/followers")
+      .then(function (respostaDoServidor) {
+        return respostaDoServidor.json();
+      })
+      .then(function (respostaCompleta) {
+        setSeguidores(respostaCompleta);
+      });
+    fetch("https://graphql.datocms.com/", {
+      method: "POST",
+      headers: {
+        Authorization: "27bd2df289a0a618a7e48d9389287d",
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        query: `query {
+        allCommunities {
+          id 
+          title
+          imageUrl
+          creatorSlug
+        }
+      }`,
+      }),
+    })
+      .then((response) => response.json())
+      .then((respostaCompleta) => {
+        const comunidadesVindasDoDato = respostaCompleta.data.allCommunities;
+        console.log(comunidadesVindasDoDato);
+        setComunidades(comunidadesVindasDoDato);
+      });
+  }, []);
+
+  console.log("seguidores antes do return", seguidores);
   return (
     <>
       <AlurakutMenu />
@@ -100,12 +123,24 @@ export default function Home() {
                 console.log("Campo: ", dadosDoForm.get("image"));
 
                 const comunidade = {
-                  id: new Date().toISOString(),
                   title: dadosDoForm.get("title"),
-                  image: dadosDoForm.get("image"),
-                };
-                const comunidadesAtualizadas = [...comunidades, comunidade];
-                setComunidades(comunidadesAtualizadas);
+                  imageUrl: dadosDoForm.get("image"),
+                  creatorSlug: usuarioAleatorio
+                }
+                fetch('/api/comunidades', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(comunidade)
+                })
+                .then(async (response) => {
+                  const dados = await response.json();
+                  console.log(dados.registroCriado);
+                  const comunidade = dados.registroCriado;
+                  const comunidadesAtualizadas = [...comunidades, comunidade];
+                  setComunidades(comunidadesAtualizadas)
+                })
               }}
             >
               <div>
@@ -132,15 +167,15 @@ export default function Home() {
           className="profileRelationsArea"
           style={{ gridArea: "profileRelationsArea" }}
         >
-           <ProfileRelationsBox title="Seguidores" items={seguidores} />
+          <ProfileRelationsBox title="Seguidores" items={seguidores} />
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">Comunidades ({comunidades.length})</h2>
             <ul>
               {comunidades.map((itemAtual) => {
                 return (
                   <li key={itemAtual.id}>
-                    <a href={`/users/${itemAtual.title}`}>
-                      <img src={itemAtual.image} />
+                    <a href={`/comunidades/${itemAtual.id}`}>
+                      <img src={itemAtual.imageUrl} />
                       <span>{itemAtual.title}</span>
                     </a>
                   </li>
