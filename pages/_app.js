@@ -10,7 +10,7 @@ const GlobalStyle = createGlobalStyle`
 }  
 body {
     font-family: sans-serif;
-    background-color: #D9e6f6;
+    background-image: url('https://i.picsum.photos/id/1028/1000/1000.jpg?hmac=fzXn63op6NzGPRPUW10Bk2tCkvSE2m51YaAPcAZvdTI');
   }
 
 #_next{
