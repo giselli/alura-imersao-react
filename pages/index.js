@@ -40,10 +40,37 @@ function ProfileRelationsBox(propriedades) {
       <h2 className="smallTitle">
         {propriedades.title} ({propriedades.items.length})
       </h2>
-      <ul></ul>
+      <ul>
+        {propriedades.items.slice(0, 6).map((itemAtual) => {
+          return (
+            <li key={itemAtual.id}>
+              <a href={itemAtual.link_url} key={itemAtual}>
+                <img src={itemAtual.img_url} />
+                <span>{itemAtual.caption}</span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
     </ProfileRelationsBoxWrapper>
   );
 }
+
+function ProfileFollowers(props) {
+  return (
+    <ProfileRelationsBox
+      title={props.title}
+      items={props.items.map(function (s) {
+        return {
+          id: s.id,
+          link_url: `https://github.com/${s.login}`,
+          img_url: `https://github.com/${s.login}.png`,
+          caption: s.login,
+        };
+      })}
+    />
+  );
+};
 
 export default function Home(props) {
   const usuarioAleatorio = props.githubUser;
@@ -73,7 +100,9 @@ export default function Home(props) {
       })
       .then(function (respostaCompleta) {
         setSeguidores(respostaCompleta);
+        //console.log("x" + respostaCompleta);
       });
+      
     fetch("https://graphql.datocms.com/", {
       method: "POST",
       headers: {
@@ -100,7 +129,7 @@ export default function Home(props) {
       });
   }, []);
 
-  console.log("seguidores antes do return", seguidores);
+  //console.log("seguidores antes do return", seguidores);
   return (
     <>
       <AlurakutMenu />
@@ -168,7 +197,7 @@ export default function Home(props) {
           className="profileRelationsArea"
           style={{ gridArea: "profileRelationsArea" }}
         >
-          <ProfileRelationsBox title="Seguidores" items={seguidores} />
+          <ProfileFollowers title="Seguidores" items={seguidores} />
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">Comunidades ({comunidades.length})</h2>
             <ul>
@@ -208,28 +237,30 @@ export default function Home(props) {
   );
 }
 export async function getServerSideProps(context) {
-  const cookies = nookies.get(context)
+  const cookies = nookies.get(context);
   const token = cookies.USER_TOKEN;
-  const { isAuthenticated } = await fetch('https://alurakut.vercel.app/api/auth', {
-    headers: {
-        Authorization: token
-      }
-  })
-  .then((resposta) => resposta.json())
+  const { isAuthenticated } = await fetch(
+    "https://alurakut.vercel.app/api/auth",
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  ).then((resposta) => resposta.json());
 
-  if(!isAuthenticated) {
+  if (!isAuthenticated) {
     return {
       redirect: {
-        destination: '/login',
+        destination: "/login",
         permanent: false,
-      }
-    }
+      },
+    };
   }
 
   const { githubUser } = jwt.decode(token);
   return {
     props: {
-      githubUser
+      githubUser,
     }, // will be passed to the page component as props
-  }
+  };
 }
