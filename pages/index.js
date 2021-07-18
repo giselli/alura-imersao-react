@@ -42,7 +42,7 @@ function ProfileRelationsBox(propriedades) {
         {propriedades.title} ({propriedades.items.length})
       </h2>
       <ul>
-        {propriedades.items.slice(0, 6).map((itemAtual) => {
+        {propriedades.items.sort((a,b)=> 0.5 - Math.random()).slice(0, 6).map((itemAtual) => {
           return (
             <li key={itemAtual.id}>
               <a href={itemAtual.link_url} key={itemAtual}>
@@ -246,7 +246,7 @@ export default function Home(props) {
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">Comunidades ({comunidades.length})</h2>
             <ul>
-              {comunidades.slice(0,6).map((itemAtual) => {
+              {comunidades.sort((a,b)=> 0.5 - Math.random()).slice(0,6).map((itemAtual) => {
                 return (
                   <li key={itemAtual.id}>
                     <a href={`/comunidades/${itemAtual.id}`}>
