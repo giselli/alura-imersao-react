@@ -1,6 +1,7 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { AlurakutStyles } from '../src/lib/AlurakutCommons';
 
+
 const GlobalStyle = createGlobalStyle`
 /*Reset do CSS */
 * {
@@ -41,6 +42,7 @@ export default function App({ Component, pageProps }) {
       <ThemeProvider theme={theme}>
         <Component {...pageProps} />
       </ThemeProvider>
+     
     </>
   )
 }

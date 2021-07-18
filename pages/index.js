@@ -9,6 +9,7 @@ import {
   OrkutNostalgicIconSet,
 } from "../src/lib/AlurakutCommons";
 import { ProfileRelationsBoxWrapper } from "../src/components/ProfileRelations";
+import { PostsBoxWrapper } from "../src/components/PostsBox";
 
 function ProfileSidebar(propriedades) {
   return (
@@ -70,7 +71,7 @@ function ProfileFollowers(props) {
       })}
     />
   );
-};
+}
 
 export default function Home(props) {
   const usuarioAleatorio = props.githubUser;
@@ -102,7 +103,7 @@ export default function Home(props) {
         setSeguidores(respostaCompleta);
         //console.log("x" + respostaCompleta);
       });
-      
+
     fetch("https://graphql.datocms.com/", {
       method: "POST",
       headers: {
@@ -192,6 +193,50 @@ export default function Home(props) {
               <button>Criar comunidade</button>
             </form>
           </Box>
+          <PostsBoxWrapper>
+            <h1 className="depoimentos">Depoimentos</h1>
+          </PostsBoxWrapper>
+          <PostsBoxWrapper>
+            <div className="alinhados">
+              <img src="https://scontent-gru1-1.xx.fbcdn.net/v/t1.6435-9/98075547_10223551681885991_2693755315698008064_n.jpg?_nc_cat=110&ccb=1-3&_nc_sid=e3f864&_nc_eui2=AeFBlba-18BVlmBp7gDzKCausVvOvjReRSWxW86-NF5FJbkAth8iOs1iqGLeBhHJEsc&_nc_ohc=xKSdoeh9Q84AX_ta79U&_nc_ht=scontent-gru1-1.xx&oh=9c6c828b0308bff29da3ee021a076a81&oe=60F96D0D" />
+              <div className="textos">
+                <h1>Gatinho</h1>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Phasellus pulvinar faucibus neque, nec rhoncus nunc ultrices
+                  sit amet. Curabitur ac sagittis neque, vel egestas est. Aenean
+                  elementum, erat at aliquet hendrerit, elit nisl posuere
+                  tortor, id suscipit diam dui sed nisi. Morbi sollicitudin
+                  massa vel tortor consequat, eget semper nisl fringilla.
+                  Maecenas at hendrerit odio. Sed in mi eu quam suscipit
+                  bibendum quis at orci. Pellentesque fermentum nisl purus, et
+                  iaculis lectus pharetra sit amet.
+                </p>
+              </div>
+            </div>
+          </PostsBoxWrapper>
+          <PostsBoxWrapper>
+            <div className="alinhados">
+              <img src="https://i.picsum.photos/id/755/200/200.jpg?hmac=fgsDUz8GLl3UPtHhHlMIabU9V8LhbOPCwYGzrrn6CyU" />
+              <div className="textos">
+                <h1>Vovó Nena</h1>
+                <p>
+                  Quam diam aliquam condimentum orci mollis risus dui lectus
+                  velit, quis cubilia amet mauris velit magna facilisis arcu
+                  pharetra leo, risus consequat vulputate aenean nisi gravida mi
+                  tellus. fringilla lectus ad nullam habitasse fringilla
+                  accumsan ut, integer nunc viverra lorem condimentum lacus
+                  congue, dolor torquent laoreet sapien ante est. purus interdum
+                  feugiat purus non praesent maecenas curabitur netus, lorem
+                  hendrerit enim aenean dolor consectetur congue, dolor habitant
+                  sem proin lorem quisque eros. duis massa sociosqu vulputate
+                  ligula suspendisse nostra non placerat, integer lacinia
+                  potenti aliquet ipsum mauris hac molestie gravida, vivamus
+                  accumsan molestie aliquam massa ut himenaeos.
+                </p>
+              </div>
+            </div>
+          </PostsBoxWrapper>
         </div>
         <div
           className="profileRelationsArea"
